@@ -1,0 +1,41 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+# Load Data
+
+library(dplyr)
+
+animals <- FY2020_Dallas_Animal_Shelter_Data
+
+head(animals)
+```
+
+```{r}
+library(janitor)
+library(lubridate)
+
+# clean names, convert dates from character to date, convert times to hms
+animals <- animals %>% 
+  clean_names() %>% 
+  mutate(intake_date = mdy(intake_date), due_out = mdy(due_out), outcome_date = mdy(outcome_date), intake_time = hms(intake_time), outcome_time = hms(outcome_time))
+
+animals
+```
+```{r}
+library(ggplot2)
+
+# visualize intake number by day 
+ggplot(data = animals, aes(x = intake_date))+
+  geom_freqpoly(binwidth = 1)
+```
+ 
+```{r}
+ggplot(data = animals, aes(x = animal_type))+
+  stat_count(aes(fill = animal_type))
+  
+```
+
