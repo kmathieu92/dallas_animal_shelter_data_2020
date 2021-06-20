@@ -31,11 +31,42 @@ library(ggplot2)
 # visualize intake number by day 
 ggplot(data = animals, aes(x = intake_date))+
   geom_freqpoly(binwidth = 1)
+
+
+
+ggplot(data = animals, aes(x = month))+
+  stat_count(aes(fill = month)) + theme_minimal()
 ```
  
 ```{r}
 ggplot(data = animals, aes(x = animal_type))+
   stat_count(aes(fill = animal_type))
   
+```
+```{r}
+
+#Order by animal type, breed, and intake date
+animals %>% 
+  arrange(animal_type, animal_breed, intake_date, .by_group = TRUE)
+```
+```{r}
+#filter by wildlife
+
+wildlife <- animals %>% 
+  filter(animal_type == "WILDLIFE")
+
+ggplot(data = wildlife, aes(x = animal_breed))+
+  stat_count(aes(fill = animal_breed)) + theme_minimal()
+
+
+
+```
+```{r}
+dogs <- animals %>% 
+  filter(animal_type == "DOG")
+
+dogs %>% 
+  group_by(animal_breed) %>% 
+  summarise(n())
 ```
 
